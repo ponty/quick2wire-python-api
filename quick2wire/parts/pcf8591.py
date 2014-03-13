@@ -88,6 +88,14 @@ TWO_DIFFERENTIAL = 3
 _ANALOGUE_OUTPUT_ENABLE_FLAG = 1 << 6
 
 
+def to_byte(x):
+    """convert to byte, input can be string or int,
+    for support both py2 and py3"""
+    try:
+        return ord(x)
+    except TypeError:
+        return x
+
 
 class PCF8591(object):
     """API to query and control an PCF8591 A/D and D/A converter via I2C.
@@ -246,8 +254,8 @@ class _InputChannel(object):
         return In
     
     def get(self):
-        return self.get_raw() / self._scale
     
+        return to_byte(self.get_raw()) / self._scale
     value = property(get)
     
     def get_raw(self):
